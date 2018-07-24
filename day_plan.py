@@ -20,7 +20,7 @@ def ask_data(data):
     '''Asks users for activities done in a day.  
     
     temp restriction: have to say 2 features, the number is number of hours the user did the activity
-    also for now, the only activities I do in a day are code and relax
+    also for now, the only activities I do in a day are code and relax.
     returns: None
     '''
     if data is 0:
