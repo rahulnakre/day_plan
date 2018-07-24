@@ -16,10 +16,8 @@ import numpy as np
 from matplotlib import pyplot
 from mpl_toolkits.mplot3d import Axes3D # needed to plot 3D surfaces
 
-data = 0
-
 def ask_data(data):
-    '''Asks users for activities done in a day. For now it stores in a csv 
+    '''Asks users for activities done in a day.  
     
     temp restriction: have to say 2 features, the number is number of hours the user did the activity
     also for now, the only activities I do in a day are code and relax
@@ -40,18 +38,7 @@ def ask_data(data):
     data = np.vstack([data, temp])
     return data
 
-'''
-for i in range(4):
-    data = ask_data(data)
-'''
-data = np.array([[3. , 3. , 6.7],
-       [2. , 4. , 7. ],
-       [2. , 3. , 8. ],
-       [1. , 5. , 7. ]])
-
-X, y = data[:, :2], data[:, 2]
-m = y.size    
-
+ 
 def  featureNormalize(X):
     """
     Normalizes the features in X. returns a normalized version of X where
@@ -68,21 +55,6 @@ def  featureNormalize(X):
     -------
     X_norm : array_like
         The normalized dataset of shape (m x n).
-    
-    Instructions
-    ------------
-    First, for each feature dimension, compute the mean of the feature
-    and subtract it from the dataset, storing the mean value in mu. 
-    Next, compute the  standard deviation of each feature and divide
-    each feature by it's standard deviation, storing the standard deviation 
-    in sigma. 
-    
-    Note that X is a matrix where each column is a feature and each row is
-    an example. You needto perform the normalization separately for each feature. 
-    
-    Hint
-    ----
-    You might find the 'np.mean' and 'np.std' functions useful.
     """
     # You need to set these values correctly
     # we need the mean and std deriv in future in case another example (m) gets added
@@ -102,16 +74,6 @@ def  featureNormalize(X):
         X_norm[:, i] = (X_norm[:, i])/sigma[i]
     # ================================================================
     return X_norm, mu, sigma
-
-# call featureNormalize on the loaded data
-'''
-X_norm, mu, sigma = featureNormalize(X)
-
-print('Computed mean:', mu)
-print('Computed standard deviation:', sigma)
-'''
-# Add intercept term to X
-X = np.concatenate([np.ones((m, 1)), X], axis=1)
 
 def computeCostMulti(X, y, theta):
     """
@@ -202,4 +164,24 @@ def gradientDescentMulti(X, y, theta, alpha, num_iters):
         J_history.append(computeCostMulti(X, y, theta))
     
     return theta, J_history
+
+if __name__ == '__main__':
+    data = 0
+    # just a test matrix
+    data = np.array([[3. , 3. , 6.7],
+           [2. , 4. , 7. ],
+           [2. , 3. , 8. ],
+           [1. , 5. , 7. ]])
+    
+    X, y = data[:, :2], data[:, 2]
+    m = y.size
+    # Add intercept term to X
+    X = np.concatenate([np.ones((m, 1)), X], axis=1)     
+    '''
+    # call featureNormalize on the loaded data
+    X_norm, mu, sigma = featureNormalize(X)
+    
+    print('Computed mean:', mu)
+    print('Computed standard deviation:', sigma)
+    '''
 
