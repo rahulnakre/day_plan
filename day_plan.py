@@ -167,16 +167,32 @@ def gradientDescentMulti(X, y, theta, alpha, num_iters):
 
 if __name__ == '__main__':
     data = 0
+    data = ask_data(data)
+    
     # just a test matrix
+    '''
     data = np.array([[3. , 3. , 6.7],
            [2. , 4. , 7. ],
            [2. , 3. , 8. ],
            [1. , 5. , 7. ]])
+    '''
     
-    X, y = data[:, :2], data[:, 2]
-    m = y.size
-    # Add intercept term to X
-    X = np.concatenate([np.ones((m, 1)), X], axis=1)     
+    # was having dimensionality issue with 1D arrays, so made a seperate case
+    # X gonna be our features, y gonna be the labels
+    if data.ndim == 1:
+        X, y = data[:2], data[2]
+        m = y.size
+        # Add intercept term to X
+        X = np.append(1, data)
+        shape = X.shape
+        
+    else:
+        X, y = data[:, :2], data[:, 2]
+        m = y.size
+        # Add intercept term to X
+        X = np.concatenate([np.ones((m, 1)), X], axis=1)
+        shape = X.shape[1]
+    
     '''
     # call featureNormalize on the loaded data
     X_norm, mu, sigma = featureNormalize(X)
@@ -184,4 +200,23 @@ if __name__ == '__main__':
     print('Computed mean:', mu)
     print('Computed standard deviation:', sigma)
     '''
+    
+    ###### gradient descent stuff here ###########
+    alpha = 0.1 
+    num_iters = 500
+    theta = np.zeros(shape)
+    # wee store J (which is the cost funtion) history because we want to graph convergence,
+    # and possibly debug any errors
+    theta, J_history = gradientDescentMulti(X, y, theta, alpha, num_iters)
+    
+    # Plot the convergence graph
+    pyplot.plot(np.arange(len(J_history)), J_history, lw=2)
+    pyplot.xlabel('Number of iterations')
+    pyplot.ylabel('Cost J')
+    
+    # Display the gradient descent's result
+    print('theta computed from gradient descent: {:s}'.format(str(theta)))
+    
+    
+    day_quality_pred = np.dot([1, 4, 5], theta)
 
