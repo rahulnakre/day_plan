@@ -168,42 +168,26 @@ def gradientDescentMulti(X, y, theta, alpha, num_iters):
 if __name__ == '__main__':
     data = 0
     data = ask_data(data)
-    
-    # just a test matrix
-    '''
+    # Simple fix to the issues I was having with 1D arrays
+    if data.ndim == 1:    
+        data = data.reshape(data.shape[0],-1)
+        data = np.swapaxes(data, 0, 1)
+
+    '''test matrix
     data = np.array([[3. , 3. , 6.7],
            [2. , 4. , 7. ],
            [2. , 3. , 8. ],
            [1. , 5. , 7. ]])
     '''
     
-    # was having dimensionality issue with 1D arrays, so made a seperate case
-    # X gonna be our features, y gonna be the labels
-    if data.ndim == 1:
-        X, y = data[:2], data[2]
-        m = y.size
-        # Add intercept term to X
-        X = np.append(1, data)
-        shape = X.shape
-        
-    else:
-        X, y = data[:, :2], data[:, 2]
-        m = y.size
-        # Add intercept term to X
-        X = np.concatenate([np.ones((m, 1)), X], axis=1)
-        shape = X.shape[1]
-    
-    '''
-    # call featureNormalize on the loaded data
-    X_norm, mu, sigma = featureNormalize(X)
-    
-    print('Computed mean:', mu)
-    print('Computed standard deviation:', sigma)
-    '''
-    
+    X, y = data[:, :2], data[:, 2]
+    m = y.size
+    # Add intercept term to X
+    X = np.concatenate([np.ones((m, 1)), X], axis=1)
+    shape = X.shape[1]
     ###### gradient descent stuff here ###########
     alpha = 0.1 
-    num_iters = 500
+    num_iters = 40
     theta = np.zeros(shape)
     # wee store J (which is the cost funtion) history because we want to graph convergence,
     # and possibly debug any errors
