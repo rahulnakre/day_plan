@@ -56,13 +56,12 @@ def  featureNormalize(X):
     X_norm : array_like
         The normalized dataset of shape (m x n).
     """
-    # You need to set these values correctly
+
     # we need the mean and std deriv in future in case another example (m) gets added
     X_norm = X.copy()
     mu = np.zeros(X.shape[1])
     sigma = np.zeros(X.shape[1])
 
-    # =========================== YOUR CODE HERE =====================
     for i in range(0, X_norm.shape[1]):
         # compute mean
         mu[i] = np.mean(X_norm[:, i])
@@ -71,8 +70,7 @@ def  featureNormalize(X):
         # compute standard derivation
         sigma[i] = np.std(X_norm[:, i])
         # divide by stadard derivation
-        X_norm[:, i] = (X_norm[:, i])/sigma[i]
-    # ================================================================
+
     return X_norm, mu, sigma
 
 def computeCostMulti(X, y, theta):
@@ -100,18 +98,13 @@ def computeCostMulti(X, y, theta):
     ------------
     Compute the cost of a particular choice of theta. You should set J to the cost.
     """
-    # Initialize some useful values
+
     m = y.shape[0] # number of training examples
-    
-    # You need to return the following variable correctly
     J = 0
-    
-    # ======================= YOUR CODE HERE ===========================
+
     hyp = X.dot(theta)
     # this is vectorized version of fomula that works w multiple variables
     J = 1/(2*m)*((hyp-y).T).dot((hyp-y))
-    
-    # ==================================================================
     return J
 
 def gradientDescentMulti(X, y, theta, alpha, num_iters):
@@ -153,12 +146,9 @@ def gradientDescentMulti(X, y, theta, alpha, num_iters):
     J_history = []
     
     for i in range(num_iters):
-        # ======================= YOUR CODE HERE ==========================
         hyp = X.dot(theta)
         # vectorized formula
         theta = theta - alpha*(1/m)*(X.T.dot(hyp-y))
-        
-        # =================================================================
         
         # save the cost J in every iteration
         J_history.append(computeCostMulti(X, y, theta))
